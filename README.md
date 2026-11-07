@@ -1,8 +1,8 @@
 # vehicoule-plugins-extra
 
 Content plugins for [Vehicoule](https://github.com/Vehicoule/Vehicoule) that may be the target of takedown requests:
-WebAssembly components, written in Rust, that the app runs in a sandbox. The planned plugin is `ytmusic`, which
-resolves a track to a playable stream; none is written yet. The other plugins live in
+WebAssembly components, written in Rust, that the app runs in a sandbox. Its plugin is `ytmusic`, which gives radio
+candidates from YouTube Music; resolving a track to a playable stream is planned. The other plugins live in
 [`vehicoule-plugins`](https://github.com/Vehicoule/vehicoule-plugins).
 
 This repository is meant to be mirrored on GitLab and Codeberg, so its build and checks run anywhere

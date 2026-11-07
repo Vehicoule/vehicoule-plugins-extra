@@ -1,0 +1,51 @@
+# Fuzz targets for everything a plugin reads from outside (ADR 0006), run with cargo-fuzz on the nightly toolchain
+# that `rust-toolchain.toml` in this directory pins, as Vehicoule's (its ADR 0013).
+# Its own workspace: it needs nightly and libFuzzer, is never shipped, and must not join the plugins' dependency graph.
+[workspace]
+
+[package]
+name = "vehicoule-plugins-extra-fuzz"
+description = "Fuzz targets for the plugins: services' answers, and the tracks and texts a call is given"
+version = "0.0.0"
+edition = "2024"
+license = "GPL-3.0-only"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+# libFuzzer's runtime, which is C++, and the `fuzz_target!` entry point; the version Vehicoule fuzzes with. The user
+# agreed to this C++ dependency for Vehicoule's host (its ADR 0013); ADR 0006 asks for it again here, in the pull
+# request of the first target.
+libfuzzer-sys = "=0.4.13"
+vehicoule-plugin-ytmusic = { path = "../plugins/ytmusic", version = "0.0.0" }
+
+# Each target is named `<plugin id>_<what it reads>` (docs/plugin-crates.md, section 4).
+[[bin]]
+name = "ytmusic_search_response"
+path = "fuzz_targets/ytmusic_search_response.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "ytmusic_radio_response"
+path = "fuzz_targets/ytmusic_radio_response.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "ytmusic_length"
+path = "fuzz_targets/ytmusic_length.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "ytmusic_seed"
+path = "fuzz_targets/ytmusic_seed.rs"
+test = false
+doc = false
+bench = false

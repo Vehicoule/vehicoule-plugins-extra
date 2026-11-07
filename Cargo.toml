@@ -2,8 +2,8 @@
 resolver = "3"
 # `template` is the crate a new plugin starts from; CI builds and installs it like a plugin, and it is never published.
 # Plugins are one crate each under `plugins/`, named after their manifest id (docs/plugin-crates.md); the first one
-# adds `"plugins/*"` here (Cargo refuses a pattern that matches no directory).
-members = ["template"]
+# added `"plugins/*"` here (Cargo refuses a pattern that matches no directory).
+members = ["template", "plugins/*"]
 
 [workspace.package]
 version = "0.0.0"
@@ -19,6 +19,11 @@ publish = false
 # Generates the guest side of the contract in `wit/` (ADR 0001); the same version as the plugin host's test plugins
 # (Vehicoule, `crates/vehicoule-plugin-host/fixtures/Cargo.toml`).
 wit-bindgen = { version = "=0.63.0", default-features = false, features = ["macros", "realloc"] }
+# Reads the JSON a service answers and writes the JSON a request sends (`ytmusic`: YouTube Music's InnerTube API).
+# Only its `std` feature: no float round-trip, no arbitrary precision, and its default recursion limit of 128 levels,
+# which bounds the stack a hostile document can take. Every plugin dependency needs the user's agreement (AGENTS.md
+# rule 11), asked in the pull request that adds it.
+serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
 
 [workspace.lints.rust]
 # `deny`, not `forbid`: the bindings `wit-bindgen` generates hold `unsafe`, and are the one place allowed to (ADR 0005).

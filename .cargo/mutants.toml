@@ -1,0 +1,11 @@
+# cargo-mutants configuration (ADR 0006). Every surviving mutant fails CI; only code the tests never build is left out,
+# each entry with its reason, as Vehicoule's `.cargo/mutants.toml` does for its Kani-only code.
+
+# Kani proof harnesses, compiled only under Kani (`cfg(kani)`): the tests never build them, and the proofs check
+# themselves when `scripts/prove.sh` runs them.
+exclude_globs = ["plugins/*/src/**/proofs.rs"]
+
+# A capability's export, compiled only for Wasm (`cfg(target_arch = "wasm32")`, ADR 0005): natively the host's
+# imports do not exist, so the tests cannot build it. Its body only hands the host's `fetch` to the plugin's `contract`
+# module, which the tests cover; the conformance test installs the built component in the real host (ADR 0002).
+exclude_re = ["<impl bindings::exports::vehicoule::plugin::[a-z_]+::Guest for [A-Za-z]+>::"]
