@@ -1,6 +1,6 @@
 # Plugin crates: layout, tests, fuzzing and proofs
 
-- Status: Proposed (waiting for the user)
+- Status: Accepted
 - Scope: how every plugin of this repository is written, so that the first one (`ytmusic`) and every later one look
   the same and are checked the same way. The same rules as in
   [`vehicoule-plugins`](https://github.com/Vehicoule/vehicoule-plugins/blob/main/docs/plugin-crates.md). What a plugin provides is decided in Vehicoule
