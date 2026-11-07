@@ -54,9 +54,11 @@ Every "must" below is checked by CI or by review; the ones CI checks name the ch
 - **32 bits.** The tests also run on `i686-unknown-linux-gnu`, because the plugins ship for `wasm32-unknown-unknown`,
   where `usize` has 32 bits (ADR 0006).
 - **Mutation testing** runs on every crate; a surviving mutant fails CI.
-- **Conformance.** CI builds every plugin and installs it in the real host (ADR 0002). Calling a capability through
-  the host, with a fake network serving the same synthetic responses, comes with the first plugin, once the host
-  calls every capability it provides.
+- **Conformance.** CI builds every plugin and installs it in the real host (ADR 0002). Each capability the host can
+  call is also called through it, on a fake network that records every request and serves synthetic responses in the
+  service's shape: `radio` of `ytmusic` is, at the pinned commit; `search` has no plugin here yet. A capability the host
+  cannot call yet is covered by the crate's own tests only, and the pull request that bumps the pin to a host that calls
+  it adds its conformance test.
 
 ## 4. Fuzzing
 

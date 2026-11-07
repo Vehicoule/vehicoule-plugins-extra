@@ -15,7 +15,7 @@ publish = false
 [dependencies]
 # The plugin host itself, pinned to the commit of the contract copy: the app's own install checks, not a copy of them.
 # `version` is the host's own, so `cargo deny` does not count the dependency as a wildcard.
-vehicoule-plugin-host = { git = "https://github.com/Vehicoule/Vehicoule", rev = "4f61277577bb8ef7f01095566da49bea06d3d6ba", version = "0.0.0" }
+vehicoule-plugin-host = { git = "https://github.com/Vehicoule/Vehicoule", rev = "840c55cf6d097b87ab8585491378d33e017a18ee", version = "0.0.0" }
 
 [lints.rust]
 unsafe_code = "forbid"

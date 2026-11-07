@@ -147,7 +147,7 @@ request, and report what you ran.
 | `plugins/<id>/` | One plugin per crate, named after its manifest id: `ytmusic` ([layout](docs/plugin-crates.md)) |
 | `template/` | The crate a new plugin starts from; built and installed in CI like a plugin, never published |
 | `wit/` | The plugin contract, a copy pinned to a Vehicoule commit; never edited by hand (ADR 0002) |
-| `conformance/` | Installs every built plugin in Vehicoule's real plugin host, at the same commit (ADR 0002) |
+| `conformance/` | Installs every built plugin in Vehicoule's real plugin host, at the same commit, and calls the capabilities that host can call (ADR 0002) |
 | `fuzz/` | cargo-fuzz targets, a workspace of its own on a pinned nightly (ADR 0006) |
 | `scripts/` | `build-plugins.sh`, `sync-contract.sh`, `check-layout.sh`, `prove.sh`, `fuzz.sh`: what CI runs, runnable anywhere |
 | `docs/adr/` | Decisions, numbered, one per file ([template](docs/adr/0000-template.md)) |
