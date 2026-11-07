@@ -1,6 +1,6 @@
 # 0007. Keep the build and the checks portable to GitLab and Codeberg
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-07
 - Deciders: the user
 
