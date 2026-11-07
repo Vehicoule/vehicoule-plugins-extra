@@ -16,8 +16,8 @@ cargo-fuzz = true
 
 [dependencies]
 # libFuzzer's runtime, which is C++, and the `fuzz_target!` entry point; the version Vehicoule fuzzes with. The user
-# agreed to this C++ dependency for Vehicoule's host (its ADR 0013); ADR 0006 asks for it again here, in the pull
-# request of the first target.
+# agreed to this C++ dependency here on 2026-11-07, for fuzzing only (ADR 0006), as for Vehicoule's host (its
+# ADR 0013).
 libfuzzer-sys = "=0.4.13"
 vehicoule-plugin-ytmusic = { path = "../plugins/ytmusic", version = "0.0.0" }
 

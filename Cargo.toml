@@ -21,8 +21,8 @@ publish = false
 wit-bindgen = { version = "=0.63.0", default-features = false, features = ["macros", "realloc"] }
 # Reads the JSON a service answers and writes the JSON a request sends (`ytmusic`: YouTube Music's InnerTube API).
 # Only its `std` feature: no float round-trip, no arbitrary precision, and its default recursion limit of 128 levels,
-# which bounds the stack a hostile document can take. Every plugin dependency needs the user's agreement (AGENTS.md
-# rule 11), asked in the pull request that adds it.
+# which bounds the stack a hostile document can take. The user agreed to it for the plugins on 2026-11-07 (AGENTS.md
+# rule 11).
 serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
 
 [workspace.lints.rust]
