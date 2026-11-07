@@ -67,8 +67,13 @@ give the web client without the player's script.
 
 ## Decision
 
-Proposed: option 3 now, with option 4 as the next piece of research, and the crate documentation corrected in the same
-pull request. Options 1 and 2 stay the user's: this ADR gives the facts for them, and no agent writes either.
+Proposed, and still open. The first recommendation was option 3 now, with option 4 as the next piece of research. On
+2026-11-07 the user answered that `ytmusic` is their `resolve` source, so options 3 and 4 are not taken for now and
+Vehicoule's providers table does not change. What remains is how, which is the user's choice between option 1 and
+option 2; no agent writes option 2. Option 1 would need the user to lift AGENTS.md rule 5 and ADR 0001 for one engine
+and to agree to that dependency (rule 11), and it has an unchecked risk: what `googlevideo.com` answers for a stream
+URL, which cannot be checked without running the player's functions. The crate documentation is corrected in the same
+pull request as this ADR.
 
 ## Consequences
 
