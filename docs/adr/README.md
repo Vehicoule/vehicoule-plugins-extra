@@ -17,3 +17,4 @@ Only the user moves an ADR from Proposed to Accepted.
 | [0006](0006-verify-plugins-without-the-network.md) | Tests without the network, 32-bit runs, fuzzing, Kani where it fits, mutants | Accepted |
 | [0007](0007-keep-the-build-portable-to-other-forges.md) | The build and the checks run on GitLab and Codeberg as on GitHub | Accepted |
 | [0008](0008-provide-resolve-with-ytmusic.md) | How `ytmusic` provides `resolve` | Proposed |
+| [0009](0009-test-only-the-changed-lines-mutants-on-pull-requests.md) | Pull requests test only the mutants in the lines they change; `main` tests them all | Accepted |
