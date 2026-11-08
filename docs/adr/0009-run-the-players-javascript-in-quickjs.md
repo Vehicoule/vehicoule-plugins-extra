@@ -89,8 +89,10 @@ written by the agents, and `resolve` without a provider or from another service 
 Option 1, accepted by the user on 2026-11-08 ("on est bon", answering this ADR's list of exceptions). It is the one
 that worked within a budget a person can wait for; boa did not. The exceptions it rests on:
 
-- **Rule 5 and Vehicoule's ADR 0001** ("no QuickJS, no JavaScript") for one engine, running only the service's own
-  script, never code of ours. Vehicoule needs its own ADR for it, written after this one is accepted.
+- **Rule 5**, "Rust only, no JavaScript" ([ADR 0001](0001-write-plugins-in-rust-as-wasm-components.md), which copies
+  Vehicoule's decision), for one engine that runs only the service's own script, never code of ours. AGENTS.md says
+  so in the same pull request as this ADR. Vehicoule's ADR 0001 covers its app and its crates ("No QuickJS in the app
+  binary"); the engine lives inside a plugin's Wasm, so no ADR is needed there unless the user wants one.
 - **Rule 11**: `rquickjs` and QuickJS's C sources handle untrusted content (a script from the network). They run
   inside the Wasm sandbox, with no import, under fuel and memory limits.
 - **Rule 9 and [ADR 0005](0005-allow-unsafe-only-in-the-generated-bindings.md)**: one `#[no_mangle]` function, which
