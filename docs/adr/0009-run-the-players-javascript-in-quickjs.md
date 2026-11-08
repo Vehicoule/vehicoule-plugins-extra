@@ -126,32 +126,50 @@ that worked within a budget a person can wait for; boa did not. The exceptions i
   user's.
 - When this ADR is accepted, ADR 0008 becomes "Superseded by 0009".
 
-## Addendum, 2026-11-08, after acceptance: other tracks and the stream headers
+## Addendum, 2026-11-08, after acceptance: other tracks, the visitor id, the clients
 
 Written after the user accepted this ADR, from further runs the same day. It adds measurements and one correction; it
 changes none of the options or of the decision.
 
-**Other tracks.** The same container, the plugin built and run in the plugin host (Vehicoule's pull request 50) against
-the real service, one run per id, no account, no token. `resolve` was given the video id directly, because search
-returns nothing from the container (ADR 0008). Of 14 ids of well-known songs, one gave a stream (`dQw4w9WgXcQ`: `206`,
-`audio/webm`). Seven were answered by `/player` with `LOGIN_REQUIRED`, "Sign in to confirm you're not a bot"
-(`9bZkp7q19f0`, `JGwWNGJdvx8`, `fJ9rUzIMcZQ`, `RgKAFK5djSk`, `YQHsXMglC9A`, `e-ORhEE9VVg`, `2Vv-BfVoq4g`), and six with
-`UNPLAYABLE`, "Video unavailable" (`kJQP7kiw5Fk`, `hTWKbfoikeg`, `OPf0YbXqDm0`, `4D7u5KF7SP8`, `CevxZvSJLk8`,
-`09R8_2nJtjg`). Earlier the same day, six other ids that `/player` did answer with formats had their stream URL answered
-`403` by `googlevideo.com`, every time for the same id; those ids were not written down, so the ids above are the part
-anyone can repeat.
+**Other tracks, without the visitor id.** The same container, the plugin built and run in the plugin host (Vehicoule's
+pull request 50) against the real service, one run per id, no account, no token. `resolve` was given the video id
+directly, because search returns nothing from the container (ADR 0008). Of 14 ids of well-known songs, one gave a stream
+(`dQw4w9WgXcQ`: `206`, `audio/webm`). Seven were answered by `/player` with `LOGIN_REQUIRED`, "Sign in to confirm you're
+not a bot" (`9bZkp7q19f0`, `JGwWNGJdvx8`, `fJ9rUzIMcZQ`, `RgKAFK5djSk`, `YQHsXMglC9A`, `e-ORhEE9VVg`, `2Vv-BfVoq4g`),
+and six with `UNPLAYABLE`, "Video unavailable" (`kJQP7kiw5Fk`, `hTWKbfoikeg`, `OPf0YbXqDm0`, `4D7u5KF7SP8`,
+`CevxZvSJLk8`, `09R8_2nJtjg`). The `visionOS` and `ANDROID_VR` clients, with the values of yt-dlp's client table of the
+same day, gave the same answers for the same ids.
 
-What this says, and does not say. "Sign in to confirm you're not a bot" is the service's own answer to an address it
-distrusts, a data center's for one; and the stream URLs carry `ip=fda3:…`, a private address, so the service sees a
-traffic path unlike a person's. That is consistent with the container's address being the cause, and does not prove it:
-no run was made from a home connection, and the plugin's deciphered `s` and `n` were not compared with yt-dlp-ejs's own
-solver on the same inputs. The `403` could also come from how the plugin puts the URL together, from a token the service
-asks for some videos only, or from the videos. Until a run from a home connection (the Mac, or the Xiaomi 14 on a home
-network), nothing here says how many tracks `resolve` can give in use. If the address is the cause, the plugin is right
-and where it runs limits it; if a token is the cause, the plugin cannot give those streams, because this project does
-not forge one.
+**The visitor id.** The bot check goes away when the `/player` call carries the visitor id the music page gives
+(`"VISITOR_DATA"` in its configuration), in the `X-Goog-Visitor-Id` header and in the client's `visitorData`, as the web
+site sends it; cookies alone changed nothing. With it, the seven `LOGIN_REQUIRED` ids answer `OK` on the web client and
+on `visionOS`. The six `UNPLAYABLE` ids stay so on every client: the service does not serve them to this address, for a
+reason it does not give. The plugin reads the id from the page it already fetches and sends it with `/player` (not with
+search and radio, which were not changed).
 
-**The stream headers.** The stream of `dQw4w9WgXcQ` was requested twice, with and without the `Origin`, `Referer` and
+**The streams, with the visitor id.** Of the eight ids that answer `OK`, one plays (`dQw4w9WgXcQ`) and seven get `403`
+from `googlevideo.com`, each one every time. The same `403` comes with every other way of asking that was tried: the
+plugin's own URL (the signature and `n` put in order by QuickJS); the `visionOS` client's URL, which holds no signature,
+no `n` and no `pot`, so there is nothing for the plugin to put together; the `ANDROID_VR` client's; the first segment of
+the HLS audio playlist that `visionOS` gives (the manifest and the playlist answer `200`); with and without the web
+site's `Origin`, `Referer` and `User-Agent`; with a `Range` header, a `range` parameter and none; over HTTP/1.1. So the
+`403` is not the signature, the `n`, the URL's assembly or the headers.
+
+What this says, and does not say. The stream URLs carry `ip=fda3:…`, a private address, so the service sees the
+container's traffic as unlike a person's; and yt-dlp's client table of the same day says the web client needs a token
+(`pot`) for HTTPS and DASH streams, and notes "intermittent/selective" token enforcement for `ANDROID_VR`. Either the
+container's address or a token the service asks for most videos could be the cause; the two cannot be told apart from
+here, and the plugin does not make a token (the project does not forge one). A run from a home connection
+(`probe_streams.py`, then the Mac or the Xiaomi 14 on a home network) is the test that separates them. Until then,
+nothing here says how many tracks `resolve` gives in use.
+
+**What `visionOS` would change, if the user wanted it.** Its `/player` answer, from `www.youtube.com`, has direct URLs
+for every format (Opus `251`, AAC `140`) with no signature and no `n`: no player script to fetch (2.66 MB), no engine,
+no `rquickjs`, no C dependency, and none of this ADR's exceptions. Costs: the plugin would present itself as another
+client, which ADR 0008 left to the user; yt-dlp's table says `ANDROID_VR` has had every format refused since 2026-08-17,
+so the same can happen to `visionOS`; and "made for kids" videos are not served to it. Not decided here.
+
+**The stream headers.** The stream of `dQw4w9WgXcQ` was requested with and without the `Origin`, `Referer` and
 `User-Agent` of the web site: `302` then `206`, `audio/webm`, `Content-Range: bytes 0-1023/3433755` both times. For that
 stream the headers were not needed; for other streams and other addresses, not checked.
 
