@@ -1,6 +1,6 @@
 # 0008. Decide how `ytmusic` provides `resolve`
 
-- Status: Proposed
+- Status: Superseded by 0009
 - Date: 2026-11-07
 - Deciders: the user
 

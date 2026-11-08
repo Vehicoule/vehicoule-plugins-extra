@@ -1,6 +1,6 @@
 # 0009. Run the player's JavaScript in QuickJS so that `ytmusic` can resolve
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-11-08
 - Deciders: the user
 
@@ -86,8 +86,8 @@ written by the agents, and `resolve` without a provider or from another service 
 
 ## Decision
 
-Proposed, and recommended: option 1. It is the one that worked within a budget a person can wait for; boa did not.
-It is not accepted until the user accepts the exceptions it needs:
+Option 1, accepted by the user on 2026-11-08 ("on est bon", answering this ADR's list of exceptions). It is the one
+that worked within a budget a person can wait for; boa did not. The exceptions it rests on:
 
 - **Rule 5 and Vehicoule's ADR 0001** ("no QuickJS, no JavaScript") for one engine, running only the service's own
   script, never code of ours. Vehicoule needs its own ADR for it, written after this one is accepted.
