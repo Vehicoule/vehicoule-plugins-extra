@@ -90,7 +90,9 @@ Option 1, accepted by the user on 2026-11-08 ("on est bon", answering this ADR's
 that worked within a budget a person can wait for; boa did not. The exceptions it rests on:
 
 - **Rule 5**, "Rust only, no JavaScript" ([ADR 0001](0001-write-plugins-in-rust-as-wasm-components.md), which copies
-  Vehicoule's decision), for one engine that runs only the service's own script, never code of ours. AGENTS.md says
+  Vehicoule's decision), for one engine that runs the service's own script and a few lines of glue of ours, written as
+  JavaScript text: the stand-ins for the browser's globals and the function that calls the script's own (the earlier
+  wording, "never code of ours", was wrong about the glue; corrected on 2026-11-08, see the addendum). AGENTS.md says
   so in the same pull request as this ADR. Vehicoule's ADR 0001 covers its app and its crates ("No QuickJS in the app
   binary"); the engine lives inside a plugin's Wasm, so no ADR is needed there unless the user wants one.
 - **Rule 11**: `rquickjs` and QuickJS's C sources handle untrusted content (a script from the network). They run
@@ -123,3 +125,37 @@ that worked within a budget a person can wait for; boa did not. The exceptions i
 - The legal question ADR 0008 raised for option 1 (the 2020 notice against youtube-dl) is not answered here and is the
   user's.
 - When this ADR is accepted, ADR 0008 becomes "Superseded by 0009".
+
+## Addendum, 2026-11-08, after acceptance: other tracks and the stream headers
+
+Written after the user accepted this ADR, from further runs the same day. It adds measurements and one correction; it
+changes none of the options or of the decision.
+
+**Other tracks.** The same container, the plugin built and run in the plugin host (Vehicoule's pull request 50) against
+the real service, one run per id, no account, no token. `resolve` was given the video id directly, because search
+returns nothing from the container (ADR 0008). Of 14 ids of well-known songs, one gave a stream (`dQw4w9WgXcQ`: `206`,
+`audio/webm`). Seven were answered by `/player` with `LOGIN_REQUIRED`, "Sign in to confirm you're not a bot"
+(`9bZkp7q19f0`, `JGwWNGJdvx8`, `fJ9rUzIMcZQ`, `RgKAFK5djSk`, `YQHsXMglC9A`, `e-ORhEE9VVg`, `2Vv-BfVoq4g`), and six with
+`UNPLAYABLE`, "Video unavailable" (`kJQP7kiw5Fk`, `hTWKbfoikeg`, `OPf0YbXqDm0`, `4D7u5KF7SP8`, `CevxZvSJLk8`,
+`09R8_2nJtjg`). Earlier the same day, six other ids that `/player` did answer with formats had their stream URL answered
+`403` by `googlevideo.com`, every time for the same id; those ids were not written down, so the ids above are the part
+anyone can repeat.
+
+What this says, and does not say. "Sign in to confirm you're not a bot" is the service's own answer to an address it
+distrusts, a data center's for one; and the stream URLs carry `ip=fda3:…`, a private address, so the service sees a
+traffic path unlike a person's. That is consistent with the container's address being the cause, and does not prove it:
+no run was made from a home connection, and the plugin's deciphered `s` and `n` were not compared with yt-dlp-ejs's own
+solver on the same inputs. The `403` could also come from how the plugin puts the URL together, from a token the service
+asks for some videos only, or from the videos. Until a run from a home connection (the Mac, or the Xiaomi 14 on a home
+network), nothing here says how many tracks `resolve` can give in use. If the address is the cause, the plugin is right
+and where it runs limits it; if a token is the cause, the plugin cannot give those streams, because this project does
+not forge one.
+
+**The stream headers.** The stream of `dQw4w9WgXcQ` was requested twice, with and without the `Origin`, `Referer` and
+`User-Agent` of the web site: `302` then `206`, `audio/webm`, `Content-Range: bytes 0-1023/3433755` both times. For that
+stream the headers were not needed; for other streams and other addresses, not checked.
+
+**Correction.** The Decision's first bullet, and AGENTS.md rule 5, said the engine runs "never code of ours". The plugin
+also runs 866 bytes of JavaScript of its own (counted in the module that holds them, not merged yet), as constant text:
+the stand-ins for the browser's globals and the function that calls the script's own. Its method is yt-dlp-ejs's,
+written again; that project's license was not checked. The Decision's first bullet and rule 5 now say so.

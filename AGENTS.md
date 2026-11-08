@@ -64,7 +64,8 @@ test in CI shows it.
    (Vehicoule's [ADR 0007](https://github.com/Vehicoule/Vehicoule/blob/main/docs/adr/0007-plugin-host.md)); a plugin
    that tries fails the conformance test (ADR 0002).
 5. **Rust only.** No JavaScript, no other language compiled to Wasm (ADR 0001). One exception: QuickJS, which runs
-   the service's own script inside `ytmusic` and never code of ours (ADR 0009).
+   the service's own script inside `ytmusic`, with a few lines of glue of ours written as JavaScript text: the stand-ins
+   for the browser's globals and the function that calls the script's own (ADR 0009).
 6. **The contract is Vehicoule's.** [`wit/`](wit/) is a copy pinned to a Vehicoule commit, never edited by hand: a
    change to the contract starts in Vehicoule, with its host and tests, and arrives here through
    `scripts/sync-contract.sh update` in a pull request of its own (ADR 0002).
