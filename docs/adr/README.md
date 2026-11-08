@@ -16,4 +16,5 @@ Only the user moves an ADR from Proposed to Accepted.
 | [0005](0005-allow-unsafe-only-in-the-generated-bindings.md) | `unsafe` only in the bindings that wit-bindgen generates | Accepted |
 | [0006](0006-verify-plugins-without-the-network.md) | Tests without the network, 32-bit runs, fuzzing, Kani where it fits, mutants | Accepted |
 | [0007](0007-keep-the-build-portable-to-other-forges.md) | The build and the checks run on GitLab and Codeberg as on GitHub | Accepted |
-| [0008](0008-provide-resolve-with-ytmusic.md) | How `ytmusic` provides `resolve` | Proposed |
+| [0008](0008-provide-resolve-with-ytmusic.md) | How `ytmusic` provides `resolve` | Superseded by 0009 |
+| [0009](0009-run-the-players-javascript-in-quickjs.md) | QuickJS runs the player's JavaScript so that `ytmusic` can `resolve` | Accepted |
