@@ -4,9 +4,9 @@
 //! track on `YouTube Music` and returns the songs of the radio the service builds from it. It keeps nothing between
 //! calls and reaches only `music.youtube.com`, through the host.
 //!
-//! `resolve`, which the providers table also gives this plugin, is not provided: on the one call checked, the
-//! service's player endpoint answered `UNPLAYABLE` with no stream to the web client this plugin identifies as
-//! (section "Service" below). The core's routing has no `resolve` provider until it is.
+//! `resolve`, which the providers table also gives this plugin, is not provided: the web client this plugin identifies
+//! as gets stream URLs that cannot be used as given (section "Service" below, and ADR 0008, which lists the options
+//! and waits for the user). The core's routing has no `resolve` provider until one is chosen.
 //!
 //! # How a call works
 //!
@@ -47,8 +47,19 @@
 //!   (60 to 544 pixels, on `yt3.googleusercontent.com`). For a video id the service does not know
 //!   (`AAAAAAAAAAA`), the answer is `200` with a `musicQueueRenderer` that has no `content`.
 //! - A body the service cannot read (`videoId` a number) is answered `400` with a JSON `error`.
-//! - `POST /youtubei/v1/player` with a video id: `200` with `playabilityStatus.status` `UNPLAYABLE` and no
-//!   `streamingData`; this is why `resolve` is not provided.
+//! - `POST /youtubei/v1/player?prettyPrint=false` with the client and a video id only: `200` with
+//!   `playabilityStatus.status` `UNPLAYABLE`, reason "Video unavailable" (its error screen says "The page needs to be
+//!   reloaded."), and no `streamingData`. No answer spoke of bot detection. The answer depends on a field that call
+//!   did not send: with `playbackContext.contentPlaybackContext.signatureTimestamp` (`20760` that day, a number found
+//!   in the player script the web page references, `/s/player/a5c2aafe/player_es6.vflset/en_US/base.js`, about
+//!   2.66 MB, and not in the page itself), `racyCheckOk` and `contentCheckOk`, it is `200` with `OK` and
+//!   `streamingData`. In that answer every audio format carries `signatureCipher` and no `url`, and the URL inside
+//!   the cipher has an `n=` parameter and no `pot=`. On nine video ids, one call each: eight `OK`, in all eight every
+//!   format (1 muxed, 16 to 18 adaptive) ciphered; one (`jNQXAC9IVRw`) `UNPLAYABLE` ("Video unavailable") even with
+//!   the timestamp. The ids were mostly major-label clips; no small-artist upload was checked. Not checked: what
+//!   `googlevideo.com` answers for a stream URL, how to use `serverAbrStreamingUrl`, and what the functions of the
+//!   player script that put the signature back in order and transform `n` contain. Using these URLs needs those
+//!   functions, which are JavaScript, so `resolve` is not provided (ADR 0008).
 //! - Not checked: a `429`, and whether the service sends `Retry-After` with one (causing one means flooding the
 //!   service; the plugin reads them as HTTP defines them); the service's limits on requests; any other status; its
 //!   terms of use.
