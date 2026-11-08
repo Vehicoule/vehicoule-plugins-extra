@@ -159,9 +159,9 @@ What this says, and does not say. The stream URLs carry `ip=fda3:…`, a private
 container's traffic as unlike a person's; and yt-dlp's client table of the same day says the web client needs a token
 (`pot`) for HTTPS and DASH streams, and notes "intermittent/selective" token enforcement for `ANDROID_VR`. Either the
 container's address or a token the service asks for most videos could be the cause; the two cannot be told apart from
-here, and the plugin does not make a token (the project does not forge one). A run from a home connection
-(`probe_streams.py`, then the Mac or the Xiaomi 14 on a home network) is the test that separates them. Until then,
-nothing here says how many tracks `resolve` gives in use.
+here, and the plugin does not make a token (the project does not forge one). A run from a home connection (the Mac, or
+the Xiaomi 14 on a home network) is the test that separates them. Until then, nothing here says how many tracks
+`resolve` gives in use.
 
 **What `visionOS` would change, if the user wanted it.** Its `/player` answer, from `www.youtube.com`, has direct URLs
 for every format (Opus `251`, AAC `140`) with no signature and no `n`: no player script to fetch (2.66 MB), no engine,
